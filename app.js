@@ -41,6 +41,19 @@ app.delete("/coffees/:coffeeId", (req, res) => {
   }
 });
 
+//Coffee Update
+
+app.put("/coffees/:coffeeId", (req, res) => {
+  const { coffeeId } = req.params;
+  const foundCoffee = coffees.find((coffee) => coffee.id === +coffeeId);
+  if (foundCoffee) {
+    for (const key in req.body) foundCoffee[key] = req.body[key];
+    res.status(204).end();
+  } else {
+    res.status(404).json({ message: "Coffee not found" });
+  }
+});
+
 app.listen(8000, () => {
   console.log("The app is running on localhost:8000");
 });
