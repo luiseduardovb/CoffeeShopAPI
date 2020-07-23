@@ -3,10 +3,11 @@ const cors = require("cors");
 const bodyParser = require("body-parser");
 
 //DB
-const db = require("./db/db");
+const db = require("./db/index");
 
 //Routes
 const coffeeRoutes = require("./routes/coffees");
+const { Coffee } = require("./db/models");
 
 //Create Express App instance
 const app = express();
@@ -19,10 +20,9 @@ app.use("/coffees", coffeeRoutes);
 
 const run = async () => {
   try {
-    await db.authenticate();
-    console.log("Connection to the database successful!");
+    await db.sync();
   } catch (error) {
-    console.error("Error connecting to the database: ", error);
+    console.log("run->error", error);
   }
 
   await app.listen(8000, () => {
