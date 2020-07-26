@@ -3,6 +3,14 @@ const slugify = require("slugify");
 //Data
 const { Coffee } = require("../db/models");
 
+exports.fetchCoffee = async (coffeeId, next) => {
+  try {
+    const coffee = await Coffee.findByPk(coffeeId);
+    return coffee;
+  } catch (error) {
+    next(error);
+  }
+};
 exports.coffeeList = async (req, res, next) => {
   try {
     const coffees = await Coffee.findAll({
@@ -25,17 +33,8 @@ exports.coffeeCreate = async (req, res, next) => {
 
 exports.coffeeUpdate = async (req, res, next) => {
   try {
-    const { coffeeId } = req.params;
-    const foundCoffee = await Coffee.findByPk(coffeeId);
-
-    if (foundCoffee) {
-      await foundCoffee.update(req.body);
-      res.status(204).end();
-    } else {
-      const err = new Error("Coffee not found");
-      err.status = 404;
-      next(err);
-    }
+    await req.coffee.update(req.body);
+    res.status(204).end();
   } catch (error) {
     next(error);
   }
@@ -43,17 +42,8 @@ exports.coffeeUpdate = async (req, res, next) => {
 
 exports.coffeeDelete = async (req, res, next) => {
   try {
-    const { coffeeId } = req.params;
-    const foundCoffee = await Coffee.findByPk(coffeeId);
-
-    if (foundCoffee) {
-      await foundCoffee.destroy();
-      res.status(204).end();
-    } else {
-      const err = new Error("Coffee not found");
-      err.status = 404;
-      next(err);
-    }
+    await req.coffee.destroy();
+    res.status(204).end();
   } catch (error) {
     next(error);
   }
