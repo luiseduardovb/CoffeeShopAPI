@@ -10,6 +10,9 @@ const {
   fetchCoffee,
 } = require("../controllers/coffeeControlers");
 
+//Middleware
+const upload = require("../middleware/multer");
+
 const router = express.Router();
 
 router.param("coffeeId", async (req, res, next, coffeeId) => {
@@ -28,10 +31,10 @@ router.param("coffeeId", async (req, res, next, coffeeId) => {
 router.get("/", coffeeList);
 
 //Coffee Create
-router.post("/", coffeeCreate);
+router.post("/", upload.single("image"), coffeeCreate);
 
 //Coffee Update
-router.put("/:coffeeId", coffeeUpdate);
+router.put("/:coffeeId", upload.single("image"), coffeeUpdate);
 
 //Coffee Delete
 router.delete("/:coffeeId", coffeeDelete);

@@ -24,6 +24,11 @@ exports.coffeeList = async (req, res, next) => {
 
 exports.coffeeCreate = async (req, res, next) => {
   try {
+    if (req.file) {
+      req.body.image = `${req.protocol}://${req.get("host")}/media/${
+        req.file.filename
+      }`;
+    }
     const newCoffee = await Coffee.create(req.body);
     res.status(201).json(newCoffee);
   } catch (error) {
@@ -33,6 +38,11 @@ exports.coffeeCreate = async (req, res, next) => {
 
 exports.coffeeUpdate = async (req, res, next) => {
   try {
+    if (req.file) {
+      req.body.image = `${req.protocol}://${req.get("host")}/media/${
+        req.file.filename
+      }`;
+    }
     await req.coffee.update(req.body);
     res.status(204).end();
   } catch (error) {
