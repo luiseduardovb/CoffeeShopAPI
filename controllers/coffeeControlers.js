@@ -1,7 +1,7 @@
 const slugify = require("slugify");
 
 //Data
-const { Coffee } = require("../db/models");
+const { Coffee, Vendor } = require("../db/models");
 
 exports.fetchCoffee = async (coffeeId, next) => {
   try {
@@ -14,23 +14,14 @@ exports.fetchCoffee = async (coffeeId, next) => {
 exports.coffeeList = async (req, res, next) => {
   try {
     const coffees = await Coffee.findAll({
-      attributes: { exclude: ["createdAt", "updatedAt"] },
+      attributes: { exclude: ["vendorId", "createdAt", "updatedAt"] },
+      include: {
+        model: Vendor,
+        as: "vendor",
+        attributes: ["name"],
+      },
     });
     res.json(coffees);
-  } catch (error) {
-    next(error);
-  }
-};
-
-exports.coffeeCreate = async (req, res, next) => {
-  try {
-    if (req.file) {
-      req.body.image = `${req.protocol}://${req.get("host")}/media/${
-        req.file.filename
-      }`;
-    }
-    const newCoffee = await Coffee.create(req.body);
-    res.status(201).json(newCoffee);
   } catch (error) {
     next(error);
   }

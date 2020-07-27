@@ -2,9 +2,9 @@ const { DataTypes, Model } = require("sequelize");
 const SequelizeSlugify = require("sequelize-slugify");
 const db = require("../db");
 
-class Coffee extends Model {}
+class Vendor extends Model {}
 
-Coffee.init(
+Vendor.init(
   {
     name: {
       type: DataTypes.STRING,
@@ -13,20 +13,6 @@ Coffee.init(
     slug: {
       type: DataTypes.STRING,
       unique: true,
-    },
-    description: {
-      type: DataTypes.STRING,
-      // allowNull: false,
-    },
-    price: {
-      type: DataTypes.INTEGER,
-      defaultValue: 1,
-      validate: {
-        min: {
-          args: 1,
-          msg: "Price must be greater or equal to 1",
-        },
-      },
     },
     image: {
       type: DataTypes.STRING,
@@ -38,8 +24,8 @@ Coffee.init(
   }
 );
 
-SequelizeSlugify.slugifyModel(Coffee, {
+SequelizeSlugify.slugifyModel(Vendor, {
   source: ["name"],
 });
 
-module.exports = Coffee;
+module.exports = Vendor;

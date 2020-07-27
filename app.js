@@ -9,6 +9,8 @@ const db = require("./db/index");
 //Routes
 const coffeeRoutes = require("./routes/coffees");
 const { Coffee } = require("./db/models");
+const vendorRoutes = require("./routes/vendors");
+const { Vendor } = require("./db/models");
 
 //Create Express App instance
 const app = express();
@@ -19,6 +21,7 @@ app.use(bodyParser.json());
 //Routers
 app.use("/coffees", coffeeRoutes);
 app.use("/media", express.static(path.join(__dirname, "media")));
+app.use("/vendors", vendorRoutes);
 
 // Non Existing Path Middleware
 app.use((req, res, next) => {
@@ -36,7 +39,7 @@ app.use((err, req, res, next) => {
 
 const run = async () => {
   try {
-    await db.sync();
+    await db.sync({ force: true });
   } catch (error) {
     console.log("run->error", error);
   }

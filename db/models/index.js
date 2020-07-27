@@ -1,3 +1,11 @@
 const Coffee = require("./Coffee");
+const Vendor = require("./Vendor");
 
-module.exports = { Coffee };
+Vendor.hasMany(Coffee, {
+  as: "coffees",
+  foreignKey: { fieldName: "vendorId", allowNull: false },
+});
+
+Coffee.belongsTo(Vendor, { as: "vendor" });
+
+module.exports = { Coffee, Vendor };

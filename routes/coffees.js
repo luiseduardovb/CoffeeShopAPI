@@ -3,7 +3,6 @@ const express = require("express");
 //Controlers
 
 const {
-  coffeeCreate,
   coffeeList,
   coffeeUpdate,
   coffeeDelete,
@@ -29,9 +28,6 @@ router.param("coffeeId", async (req, res, next, coffeeId) => {
 
 //Coffee List
 router.get("/", coffeeList);
-
-//Coffee Create
-router.post("/", upload.single("image"), coffeeCreate);
 
 //Coffee Update
 router.put("/:coffeeId", upload.single("image"), coffeeUpdate);
