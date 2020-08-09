@@ -2,15 +2,16 @@ const express = require("express");
 const cors = require("cors");
 const bodyParser = require("body-parser");
 const path = require("path");
-
+const { Coffee } = require("./db/models");
+const { Vendor } = require("./db/models");
+const { User } = require("./db/models");
 //DB
 const db = require("./db/index");
 
 //Routes
 const coffeeRoutes = require("./routes/coffees");
-const { Coffee } = require("./db/models");
 const vendorRoutes = require("./routes/vendors");
-const { Vendor } = require("./db/models");
+const userRoutes = require("./routes/users");
 
 //Create Express App instance
 const app = express();
@@ -22,6 +23,7 @@ app.use(bodyParser.json());
 app.use("/coffees", coffeeRoutes);
 app.use("/media", express.static(path.join(__dirname, "media")));
 app.use("/vendors", vendorRoutes);
+app.use(userRoutes);
 
 // Non Existing Path Middleware
 app.use((req, res, next) => {
@@ -39,7 +41,7 @@ app.use((err, req, res, next) => {
 
 const run = async () => {
   try {
-    await db.sync({ force: true });
+    await db.sync();
   } catch (error) {
     console.log("run->error", error);
   }

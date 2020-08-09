@@ -19,7 +19,7 @@ exports.vendorList = async (req, res, next) => {
         {
           model: Coffee,
           as: "coffees",
-          attributes: { exclude: ["createdAt", "updatedAt"] },
+          attributes: ["id"],
         },
       ],
     });
