@@ -11,10 +11,6 @@ const { localStrategy } = require("./middleware/passport");
 //DB
 const db = require("./db/index");
 
-//Passport Setup
-app.use(passport.initialize());
-passport.use(localStrategy);
-
 //Routes
 const coffeeRoutes = require("./routes/coffees");
 const vendorRoutes = require("./routes/vendors");
@@ -22,6 +18,10 @@ const userRoutes = require("./routes/users");
 
 //Create Express App instance
 const app = express();
+
+//Passport Setup
+app.use(passport.initialize());
+passport.use(localStrategy);
 
 app.use(cors());
 app.use(bodyParser.json());
