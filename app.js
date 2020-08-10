@@ -2,11 +2,18 @@ const express = require("express");
 const cors = require("cors");
 const bodyParser = require("body-parser");
 const path = require("path");
+const passport = require("passport");
 const { Coffee } = require("./db/models");
 const { Vendor } = require("./db/models");
 const { User } = require("./db/models");
+const { localStrategy } = require("./middleware/passport");
+
 //DB
 const db = require("./db/index");
+
+//Passport Setup
+app.use(passport.initialize());
+passport.use(localStrategy);
 
 //Routes
 const coffeeRoutes = require("./routes/coffees");
