@@ -13,6 +13,7 @@ const {
 
 //Middleware
 const upload = require("../middleware/multer");
+const passport = require("passport");
 
 const router = express.Router();
 
@@ -35,7 +36,12 @@ router.post("/:vendorId/coffees", upload.single("image"), coffeeCreate);
 router.get("/", vendorList);
 
 //Vendor Create
-router.post("/", upload.single("image"), vendorCreate);
+router.post(
+  "/",
+  passport.authenticate("jwt", { session: false }),
+  upload.single("image"),
+  vendorCreate
+);
 
 //Vendor Update
 router.put("/:vendorId", upload.single("image"), vendorUpdate);

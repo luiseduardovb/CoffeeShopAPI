@@ -6,7 +6,7 @@ const passport = require("passport");
 const { Coffee } = require("./db/models");
 const { Vendor } = require("./db/models");
 const { User } = require("./db/models");
-const { localStrategy } = require("./middleware/passport");
+const { localStrategy, jwtStrategy } = require("./middleware/passport");
 
 //DB
 const db = require("./db/index");
@@ -22,6 +22,7 @@ const app = express();
 //Passport Setup
 app.use(passport.initialize());
 passport.use(localStrategy);
+passport.use(jwtStrategy);
 
 app.use(cors());
 app.use(bodyParser.json());
@@ -48,7 +49,7 @@ app.use((err, req, res, next) => {
 
 const run = async () => {
   try {
-    await db.sync({ alter: true });
+    await db.sync();
   } catch (error) {
     console.log("run->error", error);
   }
