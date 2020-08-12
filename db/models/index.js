@@ -9,4 +9,8 @@ Vendor.hasMany(Coffee, {
 
 Coffee.belongsTo(Vendor, { as: "vendor" });
 
+User.hasOne(Vendor, { foreignKey: "userId" });
+
+Vendor.belongsTo(User, { as: "user", foreignKey: "userId" });
+
 module.exports = { Coffee, Vendor, User };
