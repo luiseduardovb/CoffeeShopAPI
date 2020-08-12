@@ -29,13 +29,19 @@ exports.coffeeList = async (req, res, next) => {
 
 exports.coffeeUpdate = async (req, res, next) => {
   try {
-    if (req.file) {
-      req.body.image = `${req.protocol}://${req.get("host")}/media/${
-        req.file.filename
-      }`;
+    if (req.user.role === "admin" || req.user.id === req.bakery.userId) {
+      if (req.file) {
+        req.body.image = `${req.protocol}://${req.get("host")}/media/${
+          req.file.filename
+        }`;
+      }
+      await req.coffee.update(req.body);
+      res.status(204).end();
+    } else {
+      const err = new Error("Unauthorized");
+      err.status = 401;
+      next(err);
     }
-    await req.coffee.update(req.body);
-    res.status(204).end();
   } catch (error) {
     next(error);
   }
@@ -43,8 +49,14 @@ exports.coffeeUpdate = async (req, res, next) => {
 
 exports.coffeeDelete = async (req, res, next) => {
   try {
-    await req.coffee.destroy();
-    res.status(204).end();
+    if (req.user.role === "admin" || req.user.id === req.bakery.userId) {
+      await req.coffee.destroy();
+      res.status(204).end();
+    } else {
+      const err = new Error("Unauthorized");
+      err.status = 401;
+      next(err);
+    }
   } catch (error) {
     next(error);
   }

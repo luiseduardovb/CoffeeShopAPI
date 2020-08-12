@@ -44,9 +44,18 @@ router.post(
 );
 
 //Vendor Update
-router.put("/:vendorId", upload.single("image"), vendorUpdate);
+router.put(
+  "/:vendorId",
+  passport.authenticate("jwt", { session: false }),
+  upload.single("image"),
+  vendorUpdate
+);
 
 //Vendor Delete
-router.delete("/:vendorId", vendorDelete);
+router.delete(
+  "/:vendorId",
+  passport.authenticate("jwt", { session: false }),
+  vendorDelete
+);
 
 module.exports = router;

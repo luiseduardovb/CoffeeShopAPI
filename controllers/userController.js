@@ -1,4 +1,4 @@
-const { User } = require("../db/models");
+const { User, Vendor } = require("../db/models");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const { JWT_EXPIRY_MS, JWT_SECRET } = require("../config/keys");
@@ -17,7 +17,8 @@ exports.signup = async (req, res, next) => {
       firstName: newUser.firstName,
       lastName: newUser.lastName,
       role: newUser.role,
-      expires: Date.now() + JWT_EXPIRY_MS,
+      vendorSlug: null,
+      exp: Date.now() + JWT_EXPIRY_MS,
     };
 
     const token = jwt.sign(JSON.stringify(payload), JWT_SECRET);
@@ -27,8 +28,9 @@ exports.signup = async (req, res, next) => {
   }
 };
 
-exports.signin = (req, res) => {
+exports.signin = async (req, res) => {
   const { user } = req;
+  const vendor = await Vendor.findOne({ where: { userId: user.id } });
   const payload = {
     id: user.id,
     username: user.username,
@@ -36,7 +38,8 @@ exports.signin = (req, res) => {
     firstName: user.firstName,
     lastName: user.lastName,
     role: user.role,
-    expires: Date.now() + JWT_EXPIRY_MS,
+    vendorSlug: vendor ? vendor.slug : null,
+    exp: Date.now() + JWT_EXPIRY_MS,
   };
   const token = jwt.sign(JSON.stringify(payload), JWT_SECRET);
   res.json({ token });

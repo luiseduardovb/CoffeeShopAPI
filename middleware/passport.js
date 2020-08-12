@@ -31,7 +31,7 @@ exports.jwtStrategy = new JWTStrategy(
   async (jwtPayload, done) => {
     //Check if token is expired
     //throw a 401 error(unauthorized) if expired
-    if (Date.now() > jwtPayload.expires) {
+    if (Date.now() > jwtPayload.exp) {
       return done(null, false);
     } else {
       //if token is not expired: fetch the user from model then pass it to req.user
