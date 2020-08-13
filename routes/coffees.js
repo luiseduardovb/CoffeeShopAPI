@@ -11,6 +11,7 @@ const {
 
 //Middleware
 const upload = require("../middleware/multer");
+const passport = require("passport");
 
 const router = express.Router();
 
@@ -27,12 +28,21 @@ router.param("coffeeId", async (req, res, next, coffeeId) => {
 });
 
 //Coffee List
-router.get("/", coffeeList);
+router.get("/", passport.authenticate("jwt", { session: false }), coffeeList);
 
 //Coffee Update
-router.put("/:coffeeId", upload.single("image"), coffeeUpdate);
+router.put(
+  "/:coffeeId",
+  passport.authenticate("jwt", { session: false }),
+  upload.single("image"),
+  coffeeUpdate
+);
 
 //Coffee Delete
-router.delete("/:coffeeId", coffeeDelete);
+router.delete(
+  "/:coffeeId",
+  passport.authenticate("jwt", { session: false }),
+  coffeeDelete
+);
 
 module.exports = router;

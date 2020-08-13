@@ -37,7 +37,7 @@ exports.vendorCreate = async (req, res, next) => {
     if (foundVendor) {
       const err = new Error("You already have a Vendor");
       err.status = 403;
-      next(err);
+      return next(err); // the return is to terminate if foundVendor
     }
     if (req.file) {
       req.body.image = `${req.protocol}://${req.get("host")}/media/${

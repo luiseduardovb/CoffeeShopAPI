@@ -5,7 +5,13 @@ const { Coffee, Vendor } = require("../db/models");
 
 exports.fetchCoffee = async (coffeeId, next) => {
   try {
-    const coffee = await Coffee.findByPk(coffeeId);
+    const coffee = await Coffee.findByPk(coffeeId, {
+      include: {
+        model: Vendor,
+        as: "vendor",
+        attributes: ["userId"],
+      },
+    });
     return coffee;
   } catch (error) {
     next(error);
@@ -29,7 +35,7 @@ exports.coffeeList = async (req, res, next) => {
 
 exports.coffeeUpdate = async (req, res, next) => {
   try {
-    if (req.user.role === "admin" || req.user.id === req.bakery.userId) {
+    if (req.user.id === req.coffee.vendor.userId) {
       if (req.file) {
         req.body.image = `${req.protocol}://${req.get("host")}/media/${
           req.file.filename
@@ -49,7 +55,7 @@ exports.coffeeUpdate = async (req, res, next) => {
 
 exports.coffeeDelete = async (req, res, next) => {
   try {
-    if (req.user.role === "admin" || req.user.id === req.bakery.userId) {
+    if (req.user.id === req.coffee.vendor.userId) {
       await req.coffee.destroy();
       res.status(204).end();
     } else {
