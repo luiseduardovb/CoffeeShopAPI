@@ -89,7 +89,7 @@ exports.vendorDelete = async (req, res, next) => {
 
 exports.coffeeCreate = async (req, res, next) => {
   try {
-    if (req.user.id === req.bakery.userId) {
+    if (req.user.id === req.vendor.userId) {
       if (req.file) {
         req.body.image = `${req.protocol}://${req.get("host")}/media/${
           req.file.filename

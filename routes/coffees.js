@@ -28,7 +28,7 @@ router.param("coffeeId", async (req, res, next, coffeeId) => {
 });
 
 //Coffee List
-router.get("/", passport.authenticate("jwt", { session: false }), coffeeList);
+router.get("/", coffeeList);
 
 //Coffee Update
 router.put(

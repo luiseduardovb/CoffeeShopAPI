@@ -30,7 +30,12 @@ router.param("vendorId", async (req, res, next, vendorId) => {
 });
 
 //Coffee Create
-router.post("/:vendorId/coffees", upload.single("image"), coffeeCreate);
+router.post(
+  "/:vendorId/coffees",
+  passport.authenticate("jwt", { session: false }),
+  upload.single("image"),
+  coffeeCreate
+);
 
 //Vendor List
 router.get("/", vendorList);
