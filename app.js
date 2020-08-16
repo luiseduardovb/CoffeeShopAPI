@@ -51,7 +51,7 @@ const PORT = process.env.PORT || 8000;
 
 const run = async () => {
   try {
-    await db.sync({ force: true });
+    await db.sync();
   } catch (error) {
     console.log("run->error", error);
   }
