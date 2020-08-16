@@ -40,9 +40,9 @@ exports.vendorCreate = async (req, res, next) => {
       return next(err); // the return is to terminate if foundVendor
     }
     if (req.file) {
-      req.body.image = `${req.protocol}://${req.get("host")}/media/${
-        req.file.filename
-      }`;
+      req.body.image = `${process.env.PORT ? "https" : "http"}://${req.get(
+        "host"
+      )}/media/${req.file.filename}`;
     }
     req.body.userId = req.user.id;
     const newVendor = await Vendor.create(req.body);
@@ -56,9 +56,9 @@ exports.vendorUpdate = async (req, res, next) => {
   try {
     if (req.user.role === "admin" || req.user.id === req.bakery.userId) {
       if (req.file) {
-        req.body.image = `${req.protocol}://${req.get("host")}/media/${
-          req.file.filename
-        }`;
+        req.body.image = `${process.env.PORT ? "https" : "http"}://${req.get(
+          "host"
+        )}/media/${req.file.filename}`;
       }
       await req.vendor.update(req.body);
       res.status(204).end();
@@ -91,9 +91,9 @@ exports.coffeeCreate = async (req, res, next) => {
   try {
     if (req.user.id === req.vendor.userId) {
       if (req.file) {
-        req.body.image = `${req.protocol}://${req.get("host")}/media/${
-          req.file.filename
-        }`;
+        req.body.image = `${process.env.PORT ? "https" : "http"}://${req.get(
+          "host"
+        )}/media/${req.file.filename}`;
       }
       req.body.vendorId = req.vendor.id;
       const newCoffee = await Coffee.create(req.body);

@@ -37,9 +37,9 @@ exports.coffeeUpdate = async (req, res, next) => {
   try {
     if (req.user.id === req.coffee.vendor.userId) {
       if (req.file) {
-        req.body.image = `${req.protocol}://${req.get("host")}/media/${
-          req.file.filename
-        }`;
+        req.body.image = `${process.env.PORT ? "https" : "http"}://${req.get(
+          "host"
+        )}/media/${req.file.filename}`;
       }
       await req.coffee.update(req.body);
       res.status(204).end();
