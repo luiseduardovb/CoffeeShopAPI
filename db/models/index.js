@@ -1,6 +1,7 @@
 const Coffee = require("./Coffee");
-const Vendor = require("./Vendor");
+const Order = require("./Order");
 const User = require("./User");
+const Vendor = require("./Vendor");
 
 Vendor.hasMany(Coffee, {
   as: "coffees",
@@ -13,4 +14,7 @@ User.hasOne(Vendor, { foreignKey: "userId" });
 
 Vendor.belongsTo(User, { as: "user", foreignKey: "userId" });
 
-module.exports = { Coffee, Vendor, User };
+User.hasMany(Order, { as: "orders", foreignKey: "userId" });
+Order.belongsTo(User, { as: "user" });
+
+module.exports = { Coffee, Order, User, Vendor };

@@ -15,6 +15,7 @@ const db = require("./db/index");
 const coffeeRoutes = require("./routes/coffees");
 const vendorRoutes = require("./routes/vendors");
 const userRoutes = require("./routes/users");
+const orderRoutes = require("./routes/orders");
 
 //Create Express App instance
 const app = express();
@@ -32,6 +33,7 @@ app.use("/coffees", coffeeRoutes);
 app.use("/media", express.static(path.join(__dirname, "media")));
 app.use("/vendors", vendorRoutes);
 app.use(userRoutes);
+app.use(orderRoutes);
 
 // Non Existing Path Middleware
 app.use((req, res, next) => {
