@@ -53,7 +53,7 @@ const PORT = process.env.PORT || 8000;
 
 const run = async () => {
   try {
-    await db.sync();
+    await db.sync({ alter: true });
   } catch (error) {
     console.log("run->error", error);
   }
